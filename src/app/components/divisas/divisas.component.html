@@ -1,0 +1,30 @@
+<!-- Fondo de pantalla -->
+<div class="absolute top-0 left-0 z-[-2] h-full w-full bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(59,130,246,0.4),rgba(17,24,39,0.8))]"></div>
+
+<!-- Contenedor Principal -->
+<div class="relative py-36 pb-32 w-full lg:w-[740px] mx-auto min-h-screen z-10">
+  <app-header></app-header>
+
+  <div class="heroContainer mb-4 flex items-center justify-center">
+    <p class="text-3xl font-bold tracking-tight sm:text-6xl text-center md:px-0 md:mb-10">
+      Criptomonedas Actuales
+    </p>
+  </div>
+
+  <p class="mt-8 text-xl lg:text-2xl text-left opacity-90 mb-5">
+    A continuación podrás ver el listado de criptomonedas con sus valores actuales:
+  </p>
+
+  <div *ngIf="cryptoData">
+    <ul class="flex flex-wrap gap-4 list-none">
+      <li *ngFor="let crypto of cryptoData" class="flex items-center space-x-2 bg-gray-800 p-4 rounded-md text-gray-200">
+        <span class="text-yellow-300">({{ crypto.name }} - {{ crypto.symbol.toUpperCase() }})</span>
+        <span class="font-semibold">{{ crypto.current_price | number:'1.2-2' }} USD</span>
+      </li>
+    </ul>
+  </div>
+
+  <div *ngIf="!cryptoData">
+    <p class="text-gray-300">Cargando datos...</p>
+  </div>
+</div>

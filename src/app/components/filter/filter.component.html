@@ -1,0 +1,7 @@
+<div class="mb-8">
+  <label for="continent" class="block text-xl font-medium">Filtrar por Continente:</label>
+  <select id="continent" (change)="onContinentSelect($event)" class="mt-3 block w-full bg-gray-800 text-gray-200 border border-gray-600 rounded-md">
+    <option value="">Todos</option>
+    <option *ngFor="let continent of continents" [value]="continent">{{ continent }}</option>
+  </select>
+</div>
