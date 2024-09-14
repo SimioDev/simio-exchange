@@ -8,11 +8,13 @@ import { CoinGeckoApiResponse, CoinGeckoResponse } from '../../interface/interfa
   styleUrls: ['./divisas.component.scss']
 })
 export class DivisasComponent implements OnInit {
+
   public cryptoData: CoinGeckoApiResponse | undefined;
 
   constructor(private apiExchangeService: ApiExchangeService) {}
 
   ngOnInit(): void {
+
     this.apiExchangeService.getCryptoData().subscribe({
       next: (response: CoinGeckoApiResponse) => {
         console.log('API Response:', response);

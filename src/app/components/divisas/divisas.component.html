@@ -1,7 +1,5 @@
-<!-- Fondo de pantalla -->
 <div class="absolute top-0 left-0 z-[-2] h-full w-full bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(59,130,246,0.4),rgba(17,24,39,0.8))]"></div>
 
-<!-- Contenedor Principal -->
 <div class="relative py-36 pb-32 w-full lg:w-[740px] mx-auto min-h-screen z-10">
   <app-header></app-header>
 
@@ -23,8 +21,9 @@
       </li>
     </ul>
   </div>
-
+  
   <div *ngIf="!cryptoData">
     <p class="text-gray-300">Cargando datos...</p>
   </div>
+
 </div>

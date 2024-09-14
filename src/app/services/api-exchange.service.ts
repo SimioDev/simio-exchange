@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CoinGeckoApiResponse } from '../interface/interface';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiExchangeService {
-  private apiUrl = 'https://api.coingecko.com/api/v3/coins/markets';
+
+  private apiUrl = environment.apiUrlCoins+'/markets';
 
   constructor(private http: HttpClient) {}
 
