@@ -10,7 +10,7 @@ import { TrendingCoinsResponse, TrendingCoinItem } from '../../interface/interfa
 export class DivisasComponent implements OnInit {
 
   public trendingCoins: TrendingCoinsResponse | undefined;
-  public searchTerm: string = '';  // Almacena el término de búsqueda
+  public searchTerm: string = '';
 
   constructor(private apiExchangeService: ApiExchangeService) {}
 
@@ -25,7 +25,6 @@ export class DivisasComponent implements OnInit {
     });
   }
 
-  // Método actualizado que filtra según el término de búsqueda
   getTrendingCoins(): TrendingCoinItem[] {
     return this.trendingCoins?.coins
       .map(coin => coin.item)
