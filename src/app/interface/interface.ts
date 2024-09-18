@@ -1,13 +1,27 @@
-export interface CoinGeckoResponse {
+export interface TrendingCoinItem {
   id: string;
-  symbol: string;
+  coin_id: number;
   name: string;
-  current_price: number;
-  price_change_percentage_24h: number;
-  market_cap: number;
-  total_volume: number;
-  high_24h: number;
-  low_24h: number;
+  symbol: string;
+  market_cap_rank: number;
+  thumb: string;
+  small: string;
+  large: string;
+  slug: string;
+  price_btc: string;
+  score: number;
+  data: {
+    price: number;
+    market_cap: string;
+    total_volume: string;
+    price_change_percentage_24h: {
+      [key: string]: number;
+    };
+  };
 }
 
-export type CoinGeckoApiResponse = CoinGeckoResponse[];
+export interface TrendingCoinsResponse {
+  coins: {
+    item: TrendingCoinItem;
+  }[];
+}

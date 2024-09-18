@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ApiExchangeService } from 'src/app/services/api-exchange.service';
-import { CoinGeckoApiResponse, CoinGeckoResponse } from '../../interface/interface';
+import { TrendingCoinsResponse, TrendingCoinItem } from '../../interface/interface'; // Ajusta la ruta según tu estructura de carpetas
 
 @Component({
   selector: 'app-divisas',
@@ -9,32 +9,42 @@ import { CoinGeckoApiResponse, CoinGeckoResponse } from '../../interface/interfa
 })
 export class DivisasComponent implements OnInit {
 
-  public cryptoData: CoinGeckoApiResponse | undefined;
+  public trendingCoins: TrendingCoinsResponse | undefined;
+  public searchTerm: string = '';  // Almacena el término de búsqueda
 
   constructor(private apiExchangeService: ApiExchangeService) {}
 
   ngOnInit(): void {
-
-    this.apiExchangeService.getCryptoData().subscribe({
-      next: (response: CoinGeckoApiResponse) => {
-        console.log('API Response:', response);
-        this.cryptoData = response;
+    this.apiExchangeService.getTrendingCoins().subscribe({
+      next: (response: TrendingCoinsResponse) => {
+        this.trendingCoins = response;
       },
       error: (err) => {
-        console.error('Error fetching data', err);
+        console.error('Error al obtener los datos', err);
       }
     });
   }
 
-  getCryptoKeys(): string[] {
-    if (this.cryptoData) {
-      return this.cryptoData.map((crypto: CoinGeckoResponse) => crypto.id);
-    }
-    return [];
+  // Método actualizado que filtra según el término de búsqueda
+  getTrendingCoins(): TrendingCoinItem[] {
+    return this.trendingCoins?.coins
+      .map(coin => coin.item)
+      .filter(coin => coin.name.toLowerCase().includes(this.searchTerm.toLowerCase())) || [];
   }
 
-  getCryptoName(cryptoId: string): string {
-    const crypto = this.cryptoData?.find((c: CoinGeckoResponse) => c.id === cryptoId);
-    return crypto ? crypto.name : 'Unknown Crypto';
+  @HostListener('window:scroll', ['$event'])
+  onScroll(event: Event): void {
+    const header = document.getElementById('header');
+    const links = document.querySelectorAll('#header nav a');
+    if (header) {
+      if (window.scrollY > 0) {
+        header.classList.add('bg-white/80', 'ring-1', 'ring-white/10', 'shadow-lg', 'text-black', 'backdrop-blur-md');
+        header.classList.remove('text-white', 'opacity-90');
+        links.forEach(link => link.classList.add('hover:text-blue-400'));
+      } else {
+        header.classList.remove('bg-white/80', 'ring-1', 'ring-white/10', 'shadow-lg', 'text-black', 'backdrop-blur-md');
+        header.classList.add('text-white', 'opacity-90');
+      }
+    }
   }
 }
