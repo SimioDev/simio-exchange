@@ -9,6 +9,8 @@ import { HomeComponent } from './components/home/home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FilterPipe } from './pipes/filter.pipe';
 import { FormsModule } from '@angular/forms';
+import { EstadisticasComponent } from './components/estadisticas/estadisticas.component';
+import { OwnerIconComponent } from './components/owner-icon/owner-icon.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import { FormsModule } from '@angular/forms';
     DivisasComponent,
     HomeComponent,
     FilterPipe,
+    EstadisticasComponent,
+    OwnerIconComponent,
     
   ],
   imports: [

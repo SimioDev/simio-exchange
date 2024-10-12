@@ -7,4 +7,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Simio Exchange';
+
+  alertVisible = false; 
+
+  showAlert() {
+    this.alertVisible = true;
+    setTimeout(() => {
+      this.alertVisible = false;
+    }, 5000);
+  }
 }

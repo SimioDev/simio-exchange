@@ -8,9 +8,13 @@ import { TrendingCoinsResponse, TrendingCoinItem } from '../../interface/interfa
   styleUrls: ['./divisas.component.scss']
 })
 export class DivisasComponent implements OnInit {
-
   public trendingCoins: TrendingCoinsResponse | undefined;
   public searchTerm: string = '';
+<<<<<<< HEAD
+=======
+  public savedCoins: TrendingCoinItem[] = [];
+  public isModalOpen: boolean = false;
+>>>>>>> 05d59ea (New view and new methods)
 
   constructor(private apiExchangeService: ApiExchangeService) {}
 
@@ -23,12 +27,47 @@ export class DivisasComponent implements OnInit {
         console.error('Error al obtener los datos', err);
       }
     });
+    this.loadSavedCoins(); 
   }
 
   getTrendingCoins(): TrendingCoinItem[] {
     return this.trendingCoins?.coins
       .map(coin => coin.item)
       .filter(coin => coin.name.toLowerCase().includes(this.searchTerm.toLowerCase())) || [];
+  }
+
+  saveCoin(coin: TrendingCoinItem): void {
+    const savedCoins = JSON.parse(localStorage.getItem('savedCoins') || '[]');
+
+    const coinExists = savedCoins.find((savedCoin: TrendingCoinItem) => savedCoin.id === coin.id);
+
+    if (!coinExists) {
+      savedCoins.push(coin);
+      localStorage.setItem('savedCoins', JSON.stringify(savedCoins));
+      alert(`${coin.name} ha sido guardada!`);
+    } else {
+      alert(`${coin.name} ya está guardada!`);
+    }
+  }
+
+  loadSavedCoins(): void {
+    this.savedCoins = JSON.parse(localStorage.getItem('savedCoins') || '[]');
+    console.log(this.savedCoins);
+  }
+
+  removeCoin(coinId: string): void {
+    this.savedCoins = this.savedCoins.filter(coin => coin.id !== coinId);
+    localStorage.setItem('savedCoins', JSON.stringify(this.savedCoins));
+    alert(`La criptomoneda ha sido eliminada.`);
+  }
+
+  openModal(): void {
+    this.loadSavedCoins();
+    this.isModalOpen = true; 
+  }
+
+  closeModal(): void {
+    this.isModalOpen = false;
   }
 
   @HostListener('window:scroll', ['$event'])

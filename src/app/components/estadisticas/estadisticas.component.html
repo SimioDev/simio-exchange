@@ -1,0 +1,16 @@
+<div class="absolute top-0 left-0 z-[-2] h-full w-full bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(59,130,246,0.4),rgba(17,24,39,0.8))]"></div>
+
+<div class="relative py-36 pb-32 w-full lg:w-[740px] mx-auto min-h-screen z-10">
+  <app-header></app-header>
+  <h1 class="text-3xl font-bold text-center mb-8 text-white">Criptomonedas Favoritas</h1>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngFor="let coin of favoriteCoins" class="bg-white rounded-lg shadow-md p-4">
+      <img src="{{coin.large}}" alt="">
+      <h2 class="text-lg font-semibold">{{ coin.name }}</h2>
+      <p class="text-gray-700">Símbolo: {{ coin.symbol }}</p>
+      <p class="text-gray-700">Precio: {{ coin.price_btc }}</p>
+      <button (click)="removeCoin(coin.id)" class="mt-2 bg-red-500 text-white py-1 px-2 rounded">Eliminar de Favoritos</button>
+    </div>
+  </div>
+</div>

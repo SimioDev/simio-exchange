@@ -5,7 +5,11 @@
 
   <div class="heroContainer mb-4 flex items-center justify-center">
     <p class="text-3xl font-bold tracking-tight sm:text-6xl text-center md:px-0 md:mb-10">
+<<<<<<< HEAD
       Criptomonedas En Tendencia
+=======
+      <span class="block w-full py-2 text-transparent bg-clip-text leading-12 bg-gradient-to-r from-purple-700 to-blue-400 lg:inline">Criptomonedas en Tendencia</span>
+>>>>>>> 05d59ea (New view and new methods)
     </p>
   </div>
 
@@ -13,16 +17,22 @@
     A continuación podrás ver el listado de criptomonedas en tendencia con sus valores actuales:
   </p>
 
-  <form class="max-w-sm mx-auto mb-8">
-    <label for="website-admin" class="block mb-2 text-sm font-medium text-white">Buscar por nombre:</label>
+  <form class="max-w-full mx-auto mb-8 px-4">
+    <label for="website-admin" class="block mb-2 text-lg font-medium text-white">Buscar por nombre:</label>
     <div class="flex">
       <span class="inline-flex items-center px-3 text-sm border border-e-0 rounded-s-md bg-gray-600 text-gray-400 border-gray-600">
-        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-coin"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M14.8 9a2 2 0 0 0 -1.8 -1h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1 -1.8 -1" /><path d="M12 7v10" /></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-coin">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+          <path d="M14.8 9a2 2 0 0 0 -1.8 -1h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1 -1.8 -1" />
+          <path d="M12 7v10" />
+        </svg>
       </span>
-      <input [(ngModel)]="searchTerm" type="text" id="website-admin" class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Escribe el nombre...">
+      <input [(ngModel)]="searchTerm" type="text" id="website-admin" class="w-full rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 text-lg p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Escribe el nombre...">
+      <button (click)="openModal()" class="ml-2 bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded text-lg">Ver mis criptomonedas favoritas</button>
     </div>
-  </form>  
-
+  </form>
+  
   <div *ngIf="trendingCoins">
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
       <table class="w-full text-sm text-left rtl:text-right text-gray-400">
@@ -33,6 +43,7 @@
             <th scope="col" class="px-6 py-3">Simbolo</th>
             <th scope="col" class="px-6 py-3">Cap de Mercado</th>
             <th scope="col" class="text-center px-6 py-3">Precio</th>
+            <th scope="col" class="text-center px-6 py-3">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -50,7 +61,10 @@
               #{{ coin.market_cap_rank }}
             </td>
             <td class="px-6 py-4">
-              {{ coin.data.price | number:'1.5-5' }} USD
+              {{ coin.data.price | number:'1.4-4' }} USD
+            </td>
+            <td class="px-6 py-4 text-center">
+              <button (click)="saveCoin(coin)" class="bg-blue-500 text-white py-2 px-4 rounded">Guardar</button>
             </td>
           </tr>
         </tbody>
@@ -61,4 +75,30 @@
   <div *ngIf="!trendingCoins">
     <p class="text-gray-300">Cargando datos...</p>
   </div>
+
+  <div *ngIf="savedCoins.length <= 0" class="mt-6">
+    <p class="text-gray-300">Actualmente no posees criptomonedas favoritas.</p>
+  </div>
+
+  <div *ngIf="isModalOpen" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+    <div class="bg-gray-800 rounded-lg p-6 w-11/12 md:w-1/2">
+      <h2 class="text-2xl mb-4 font-bold text-white text-center">Mis Criptomonedas Favoritas</h2>
+      <div *ngIf="savedCoins.length > 0; else noFavorites">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div *ngFor="let savedCoin of savedCoins" class="bg-gray-700 rounded-lg p-4 flex flex-col items-center">
+            <img [src]="savedCoin.thumb" [alt]="savedCoin.name" class="w-20 h-20 mb-2"/>
+            <h3 class="font-bold text-white text-left">{{ savedCoin.name }} ({{ savedCoin.symbol.toUpperCase() }})</h3>
+            <p class="text-left text-gray-300">Precio: {{ savedCoin.data?.price | number:'1.2-2' }} USD</p>
+            <p class="text-left text-gray-300">Cap de Mercado: #{{ savedCoin.market_cap_rank }}</p>
+            <button (click)="removeCoin(savedCoin.id)" class="mt-2 bg-red-500 text-white py-1 px-2 rounded">Eliminar</button>
+          </div>
+        </div>
+      </div>
+      <ng-template #noFavorites>
+        <div class="text-gray-600">No tienes criptomonedas favoritas guardadas.</div>
+      </ng-template>
+      <button (click)="closeModal()" class="mt-4 bg-gray-300 text-gray-800 py-2 px-4 rounded">Cerrar</button>
+    </div>
+  </div>
+  
 </div>

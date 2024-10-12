@@ -14,6 +14,6 @@ export class ApiExchangeService {
   constructor(private http: HttpClient) {}
 
   getTrendingCoins(): Observable<TrendingCoinsResponse> {
-    return this.http.get<TrendingCoinsResponse>(this.apiUrl);
+    return this.http.get<TrendingCoinsResponse>(this.apiUrl + "search/trending");
   }
 }

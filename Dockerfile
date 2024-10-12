@@ -1,18 +1,19 @@
-FROM node:14-alpine AS builder
+FROM node:18-alpine AS build
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
+COPY package*.json ./
 
 RUN npm install
 
 COPY . .
 
-RUN npm run build
+RUN npm run build --prod
 
 FROM nginx:alpine
 
-COPY --from=builder /app/dist /usr/share/nginx/simio-crypto
+COPY --from=build /app/dist/exchange_rate /usr/share/nginx/html
 
 EXPOSE 80
 
+CMD ["nginx", "-g", "daemon off;"]
