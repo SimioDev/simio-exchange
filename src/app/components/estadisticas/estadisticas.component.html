@@ -9,7 +9,7 @@
       <img src="{{coin.large}}" alt="">
       <h2 class="text-lg font-semibold">{{ coin.name }}</h2>
       <p class="text-gray-700">Símbolo: {{ coin.symbol }}</p>
-      <p class="text-gray-700">Precio: {{ coin.price_btc }}</p>
+      <p class="text-gray-700">Market Rank: {{ coin.market_cap_rank }}</p>
       <button (click)="removeCoin(coin.id)" class="mt-2 bg-red-500 text-white py-1 px-2 rounded">Eliminar de Favoritos</button>
     </div>
   </div>
