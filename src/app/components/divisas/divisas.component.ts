@@ -10,11 +10,8 @@ import { TrendingCoinsResponse, TrendingCoinItem } from '../../interface/interfa
 export class DivisasComponent implements OnInit {
   public trendingCoins: TrendingCoinsResponse | undefined;
   public searchTerm: string = '';
-<<<<<<< HEAD
-=======
   public savedCoins: TrendingCoinItem[] = [];
   public isModalOpen: boolean = false;
->>>>>>> 05d59ea (New view and new methods)
 
   constructor(private apiExchangeService: ApiExchangeService) {}
 

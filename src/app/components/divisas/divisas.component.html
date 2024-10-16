@@ -5,11 +5,7 @@
 
   <div class="heroContainer mb-4 flex items-center justify-center">
     <p class="text-3xl font-bold tracking-tight sm:text-6xl text-center md:px-0 md:mb-10">
-<<<<<<< HEAD
-      Criptomonedas En Tendencia
-=======
       <span class="block w-full py-2 text-transparent bg-clip-text leading-12 bg-gradient-to-r from-purple-700 to-blue-400 lg:inline">Criptomonedas en Tendencia</span>
->>>>>>> 05d59ea (New view and new methods)
     </p>
   </div>
 
@@ -88,7 +84,7 @@
           <div *ngFor="let savedCoin of savedCoins" class="bg-gray-700 rounded-lg p-4 flex flex-col items-center">
             <img [src]="savedCoin.thumb" [alt]="savedCoin.name" class="w-20 h-20 mb-2"/>
             <h3 class="font-bold text-white text-left">{{ savedCoin.name }} ({{ savedCoin.symbol.toUpperCase() }})</h3>
-            <p class="text-left text-gray-300">Precio: {{ savedCoin.data?.price | number:'1.2-2' }} USD</p>
+            <p class="text-left text-gray-300">Precio: {{ savedCoin.data.price | number:'1.2-2' }} USD</p>
             <p class="text-left text-gray-300">Cap de Mercado: #{{ savedCoin.market_cap_rank }}</p>
             <button (click)="removeCoin(savedCoin.id)" class="mt-2 bg-red-500 text-white py-1 px-2 rounded">Eliminar</button>
           </div>
