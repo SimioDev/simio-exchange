@@ -60,7 +60,6 @@ export class DivisasComponent implements OnInit {
 
   loadSavedCoins(): void {
     this.savedCoins = JSON.parse(localStorage.getItem('savedCoins') || '[]');
-    console.log(this.savedCoins);
   }
 
   removeCoin(coinId: string): void {
