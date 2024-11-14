@@ -45,7 +45,7 @@
         <tbody>
           <tr *ngFor="let coin of getTrendingCoins()" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
             <td class="text-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-              <img [src]="coin.thumb" [alt]="coin.name" class="w-10 h-10 rounded-full"/>
+              <img [src]="coin.large" [alt]="coin.name" class="w-10 h-10 rounded-full"/>
             </td>
             <td class="px-6 py-4 font-bold">
               {{ coin.name }}
@@ -78,7 +78,7 @@
       <div *ngIf="savedCoins.length > 0; else noFavorites">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div *ngFor="let savedCoin of savedCoins" class="bg-gray-700 rounded-lg p-4 flex flex-col items-center">
-            <img [src]="savedCoin.thumb" [alt]="savedCoin.name" class="w-20 h-20 mb-2"/>
+            <img [src]="savedCoin.large" [alt]="savedCoin.name" class="w-20 h-20 mb-2"/>
             <h3 class="font-bold text-white text-left">{{ savedCoin.name }} ({{ savedCoin.symbol.toUpperCase() }})</h3>
             <p class="text-left text-gray-300">Precio: {{ savedCoin.data.price | number:'1.2-2' }} USD</p>
             <p class="text-left text-gray-300">Cap de Mercado: #{{ savedCoin.market_cap_rank }}</p>
@@ -90,6 +90,89 @@
         <div class="text-gray-300">Actualmente no hay ninguna criptomoneda guardada.</div>
       </ng-template>
       <button (click)="closeModal()" class="mt-4 bg-gray-300 text-gray-800 py-2 px-4 rounded">Cerrar</button>
+    </div>
+  </div>
+  
+  <div *ngIf="analytics" class="mt-8 bg-gray-800/50 backdrop-blur-sm p-6 rounded-lg">
+    <h2 class="text-2xl font-bold mb-6 text-white text-center">Análisis de Mercado</h2>
+    
+    <div class="grid grid-cols-1 gap-6">
+      <!-- Estadísticas Destacadas -->
+      <div class="bg-gray-700/50 p-6 rounded-lg backdrop-blur-sm">
+        <h3 class="text-xl mb-4 text-white font-semibold border-b border-gray-500 pb-2">Estadísticas Destacadas</h3>
+        
+        <div class="mb-4">
+          <h4 class="text-blue-400 font-medium mb-2">Mejor Posición en el Mercado</h4>
+          <div class="flex items-center gap-2">
+            <img [src]="getBestRankedCoin()?.large" class="w-8 h-8 rounded-full">
+            <div>
+              <p class="text-white">{{ getBestRankedCoin()?.name }}</p>
+              <p class="text-gray-300 text-sm">Ranking #{{ analytics.maxMarketCap }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <h4 class="text-green-400 font-medium mb-2">Precio Más Alto</h4>
+          <div class="flex items-center gap-2">
+            <img [src]="getHighestPriceCoin()?.large" class="w-8 h-8 rounded-full">
+            <div>
+              <p class="text-white">{{ getHighestPriceCoin()?.name }}</p>
+              <p class="text-gray-300 text-sm">{{ getHighestPriceCoin()?.data?.price | currency }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="text-purple-400 font-medium mb-2">Precio Promedio del Mercado</h4>
+          <p class="text-white">{{ analytics.averagePrice | currency }}</p>
+        </div>
+      </div>
+
+      <!-- Comparación de Precios Mejorada -->
+      <div class="bg-gray-700/50 p-6 rounded-lg backdrop-blur-sm">
+        <h3 class="text-xl mb-4 text-white font-semibold border-b border-gray-500 pb-2">Comparación de Precios</h3>
+        <p class="text-gray-300 mb-4">Este gráfico muestra el precio relativo de cada criptomoneda en comparación con la de mayor valor. La criptomoneda más valiosa representa el 100%, y las demás se muestran como un porcentaje de ese valor máximo.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div *ngFor="let price of analytics.priceComparison | keyvalue" 
+               class="bg-gray-800/50 p-4 rounded">
+            <div class="flex items-center gap-3 mb-2">
+              <img [src]="getCoinBySymbol(price.key)?.large" class="w-8 h-8 rounded-full">
+              <div class="flex-grow">
+                <p class="text-white font-medium">{{ getCoinBySymbol(price.key)?.name }}</p>
+                <p class="text-gray-400 text-sm">{{ getCoinBySymbol(price.key)?.data?.price | currency }}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="flex-grow bg-gray-600 rounded-full h-3">
+                <div class="bg-blue-400 h-3 rounded-full transition-all duration-300" 
+                     [style.width]="price.value + '%'"></div>
+              </div>
+              <span class="text-gray-300 min-w-[4rem] text-right">{{ price.value | number:'1.1-1' }}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Distribución por Ranking -->
+      <div class="bg-gray-700/50 p-6 rounded-lg backdrop-blur-sm">
+        <h3 class="text-xl mb-4 text-white font-semibold border-b border-gray-500 pb-2">Distribución por Ranking</h3>
+        <p class="text-gray-300 mb-4">Esta sección muestra cómo se distribuyen las criptomonedas según su posición en el mercado. Las monedas están agrupadas en rangos de 10 posiciones, permitiendo ver la concentración de criptomonedas en diferentes niveles del ranking.</p>
+        
+        <div class="space-y-4">
+          <div *ngFor="let rank of analytics.rankDistribution | keyvalue" class="bg-gray-800/50 p-3 rounded">
+            <h4 class="text-blue-400 font-medium mb-2">Rango #{{ rank.key }}</h4>
+            <div class="grid grid-cols-1 gap-2">
+              <div *ngFor="let coin of getCoinsInRange(rank.key)" class="flex items-center gap-2">
+                <img [src]="coin.large" class="w-6 h-6 rounded-full">
+                <span class="text-white">{{ coin.name }}</span>
+                <span class="text-gray-400 text-sm">(#{{ coin.market_cap_rank }})</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   
