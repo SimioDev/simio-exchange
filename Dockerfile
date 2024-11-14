@@ -1,4 +1,4 @@
-FROM node:14-alpine AS builder
+FROM node:16-alpine AS builder
 
 WORKDIR /app
 
@@ -15,4 +15,3 @@ FROM nginx:alpine
 COPY --from=builder /app/dist/exchange_rate /usr/share/nginx/html
 
 CMD ["nginx", "-g", "daemon off;"]
-

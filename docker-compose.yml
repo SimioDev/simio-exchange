@@ -1,6 +1,8 @@
 services:
   simio-service:
-    image: simio_crypto_image
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: simioexchange_container
     ports:
       - "80:80"
